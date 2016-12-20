@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "nome": "Amauri Jose Zuotoski",
+        "especialidade": 1
+    },
+    {
+        "id": 2,
+        "nome": "Beatriz Maria Matte Peplow",
+        "especialidade": 1
+    },
+    {
+        "id": 3,
+        "nome": "Braulio Augusto Correa Melo",
+        "especialidade": 1
+    },
+    {
+        "id": 4,
+        "nome": "Carlos Henrique Bertozzi Staut",
+        "especialidade": 1
+    },
+    {
+        "id": 5,
+        "nome": "Carlos Makoto Moriya",
+        "especialidade": 1
+    }
+]

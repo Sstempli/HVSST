@@ -9,60 +9,72 @@ $(function() {
 
 //Variáveis para consulta
   var $palavrachave;
+
   var $strnome;
+  var $vlenome;
+
   var $strcidade;
+  var $vlecidade;
+
   var $strespecialidade;
+  var $vleespecialidade;
+
   var $dataselect;
 
+  var $nomemedicos;
 
-
-  // Consulta Prestadores
-
+//
+// Consulta Prestadores
+//
   $('#btn-primary-pesquisa').click(function(){
     $palavrachaveobj = document.getElementById("form-control-palavrachave");
     $palavrachave = $palavrachaveobj.value;
-  console.log('Palavra chave', $palavrachave, $strnome, $strcidade, $strespecialidade);
+  console.log('Palavra chave', $palavrachave, $vlenome, $vlecidade, $vleespecialidade);
 
-    $dataselect= "{" + '"palavrachave"' + ":" + '"' + $palavrachave + '"' + "," +
-          '"nome"' + ":" + '"' + $strnome + '"' + "," +
-          '"cidade"' + ":" +  '"' + $strcidade + '"'+ "," +
-          '"especialidade"' + ":" +  '"' + $strespecialidade + '"' + "}";
-console.log($dataselect);
+    $dataselect="http://vhospital.herokuapp.com/apiv0/medico/?palavrachave=" + $palavrachave + "&nome=" + $vlenome +"&cidade=" + $vlecidade + "&especialidade=" + $vleespecialidade;
 
 
-//  $.ajax({
-//          type: 'GET',
-//          url: 'url',
-//          data: $dataselect,
 
-//          success: function (data) {
-//              var names = data
+  console.log($dataselect);
+
+  $.ajax({
+          type: 'GET',
+          url: $dataselect,
+          success: function (data) {
+              $nomemedicos = data,
 //              $('#cand').html(data);
-//          }
-//      });
-//console.log(data);
+ console.log($nomemedicos);
+          mostraresultados();
+          },
+          error: function(){
+              alert('errorloading Lista Prestador');
+          },
+    });
+
 
   });
-
-
-
-
+//
 //Carga do Nome do Prestador
-
+//
   function appOptionNome(data){
-    $.each(data.nomeprestador, function(i, nome){
+    $.each(data, function(i, nome){
       $('#form-control-nome')
-          .append($('<option>', {i: i})
-          .text(nome.nome));
+      .append($("<option></option>")
+                        .attr("value",nome.id)
+                        .text(nome.nome));
     });
   };
 
   function selectOptionNome(){
       var e = document.getElementById("form-control-nome");
       console.log('lista nome', e);
+//        $strnome = e.options[0].text;
       $strnome = e.options[e.selectedIndex].text;
+      $vlenome = e.options[e.selectedIndex].value;
   //    var $uflistasel = $('#uflistasel');
       console.log('Selecionado', $strnome);
+      console.log('Selecionado', $vlenome);
+
 //      showOption();
 //      var outsel = document.getElementById('ufselecionada');
 //      outsel.value = struf;
@@ -75,8 +87,7 @@ $('#form-control-nome').change(function(){
 
   $.ajax({
     type: 'GET',
-
-    url: 'https://api.myjson.com/bins/53nkd',
+    url: 'http://vhospital.herokuapp.com/apiv0/medico/',
     success: function(data) {
       appOptionNome(data);
     },
@@ -88,27 +99,20 @@ $('#form-control-nome').change(function(){
   //Carga da Cidade
 
     function appOptionCidade(data){
-      $.each(data.cidade, function(i, nome){
+      $.each(data, function(i, nome){
         $('#form-control-cidade')
-            .append($('<option>', {i: i})
-            .text(nome.nome));
+        .append($("<option></option>")
+                          .attr("value",nome.id)
+                          .text(nome.cidade));
       });
-      $strcidade="Curitiba";
-      $strnome = "";
-      $strespecialidade = "";
-      $
     };
 
     function selectOptionCidade(){
         var e = document.getElementById("form-control-cidade");
-        console.log('lista cidade', e);
+    console.log('lista cidade', e);
         $strcidade = e.options[e.selectedIndex].text;
-    //    var $uflistasel = $('#uflistasel');
-        console.log('Selecionado', $strcidade);
-  //      showOption();
-  //      var outsel = document.getElementById('ufselecionada');
-  //      outsel.value = struf;
-  //      console.log('Selecionado', struf);
+        $vlecidade = e.options[e.selectedIndex].value;
+    console.log('Selecionado', $strcidade);
     };
 
   $('#form-control-cidade').change(function(){
@@ -118,7 +122,7 @@ $('#form-control-nome').change(function(){
     $.ajax({
       type: 'GET',
 
-      url: 'https://api.myjson.com/bins/ouqt',
+      url: 'http://vhospital.herokuapp.com/apiv0/localizacao/',
       success: function(data) {
         appOptionCidade(data);
       },
@@ -130,10 +134,11 @@ $('#form-control-nome').change(function(){
     //Carga da especialidade
 
       function appOptionEspecialidade(data){
-        $.each(data.especialidade, function(i, nome){
+        $.each(data, function(i, nome){
           $('#form-control-especialidade')
-              .append($('<option>', {i: i})
-              .text(nome.nome));
+          .append($("<option></option>")
+                            .attr("value",nome.id)
+                            .text(nome.nome));
         });
       };
 
@@ -141,6 +146,8 @@ $('#form-control-nome').change(function(){
           var e = document.getElementById("form-control-especialidade");
           console.log('lista especialidade', e);
           $strespecialidade = e.options[e.selectedIndex].text;
+          $vleespecialidade = e.options[e.selectedIndex].value;
+
       //    var $uflistasel = $('#uflistasel');
           console.log('Selecionado', $strespecialidade);
     //      showOption();
@@ -156,7 +163,7 @@ $('#form-control-nome').change(function(){
       $.ajax({
         type: 'GET',
 
-        url: 'https://api.myjson.com/bins/23oap',
+        url: 'http://vhospital.herokuapp.com/apiv0/especialidade/',
         success: function(data) {
           appOptionEspecialidade(data);
         },
@@ -164,7 +171,4 @@ $('#form-control-nome').change(function(){
           alert('errorloading especialidade');
         },
       });
-
-
 });
-// url: 'https://api.myjson.com/bins/2p0f6',
