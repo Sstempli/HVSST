@@ -5,7 +5,7 @@
 # -r requirements-azure.txt
 
 # Minimum Django and REST framework version
-Django==1.10
+Django==1.11.29
 djangorestframework==3.5.3
 django-filter==1.0.1
 Markdown==2.6.7
